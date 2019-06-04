@@ -32,7 +32,7 @@ payload = '''
 
 for i in range(len(resp_dict['items'])):
 	try:
-		name = resp_dict['items'][i].get('name')
+		name = resp_dict['items'][i]['name']
 		key = resp_dict['items'][i]['ipAddress']['ip']['value']
 		value = resp_dict['items'][i]['ipAddress']['netMask']['value']
 		ints_ips[name] = key+' '+value
