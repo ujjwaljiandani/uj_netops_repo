@@ -9,26 +9,15 @@ username= 'ignw'
 password = 'ignw'
 
 resp = requests.get(f'{url}interfaces/physical/',auth=(username, password), verify=False)
-#resp = requests.get(f'{url}i/api/interfaces/physical/GigabitEthernet0_API_SLASH_1',auth=(username, password), verify=False)
-#resp = requests.get(f'{url}i/api/interfaces/physical/GigabitEthernet0_API_SLASH_2',auth=(username, password), verify=False)
 print(f'Response:{resp}')
 print(f'Status Code:{resp.status_code}')
-print(dir(resp))
 
 resp_dict = json.loads(resp.text)
 
 ints_qty = resp_dict['rangeInfo']['total']
 ints_names = []
-ints_ips = []
+ints_ips = {}
 
-for i in resp_dict['items']:
-	ints_names.append(i['name'])
-	ints_ips.append(i['ipAddress'])
-
-print('Inf Names:')
-print(ints_names)
-print('Inf IPs:')
-print(ints_ips)	
 payload = '''
 {
 	"host": {
@@ -41,4 +30,13 @@ payload = '''
 }
 '''
 
+for i in range(len(resp_dict['items'])):
+	try:
+		name = resp_dict['items'][i].get('name')
+		key = resp_dict['items'][i]['ipAddress']['ip']['value']
+		value = resp_dict['items'][i]['ipAddress']['netMask']['value']
+		ints_ips[name] = key+' '+value
+	except:
+		pass
 
+print(f'Int IPS:{ints_ips}')
