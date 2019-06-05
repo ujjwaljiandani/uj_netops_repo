@@ -1,0 +1,16 @@
+---
+  - name: IOS Conditional Facts Gathering
+    hosts: csr
+    tasks:
+      - name: Gather IOS Facts
+        vars:
+          credentials:
+            host: "{{ ansible_host }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+        ios_facts:
+          provider: "{{ credentials }}"
+        register: ios_facts_output
+      - name: Print IOS Facts
+        debug:
+          msg: "{{ ios_facts_output }}"
