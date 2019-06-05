@@ -1,0 +1,14 @@
+[all:vars]
+username=ignw
+password=ignw
+ansible_connection=local
+
+[csr]
+ignw-csr ansible_host=10.0.0.5
+
+[asa]
+ignw-asa ansible_host=10.0.0.8
+
+[cisco:children]
+csr
+asa

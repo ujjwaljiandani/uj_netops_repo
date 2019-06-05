@@ -1,0 +1,12 @@
+---
+  - name: Validating our Ansible Variables
+    gather_facts: no
+    hosts: csr
+    tasks:
+      - name: Print Group Variables
+        debug:
+          msg: "NTP: {{ ntp1 }}"
+          
+      - name: Print Host Variables
+        debug:
+          msg: "Timezone: {{ timezone }}"
