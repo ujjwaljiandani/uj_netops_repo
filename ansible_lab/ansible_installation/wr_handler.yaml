@@ -1,5 +1,5 @@
 ---
-  - name: The Before Argument
+  - name: Handle This!
     gather_facts: no
     hosts: csr
     vars:
@@ -7,15 +7,22 @@
         host: "{{ ansible_host }}"
         username: "{{ username }}"
         password: "{{ password }}"
+        timeout: 30
     tasks:
       - name: Build me an ACL!!
         ios_config:
           provider: "{{ credentials }}"
-          lines: 
+          lines:
             - permit ip host 1.1.1.1 host 8.8.8.8 log
-            - permit ip host 7.7.7.7 host 8.8.8.8 log
             - permit ip host 1.1.1.2 host 8.8.8.8 log
             - permit ip host 1.1.1.3 host 8.8.8.8 log
           parents: ip access-list extended AnsibleACL
           match: exact
           before: no ip access-list extended AnsibleACL
+        notify: "Save your work!"
+
+    handlers:
+      - name: Save your work!
+        ios_command:
+          provider: "{{ credentials }}"
+          commands: "wr"
